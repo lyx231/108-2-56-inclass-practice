@@ -7,7 +7,12 @@ output: html_document
 knitr::opts_chunk$set(echo = TRUE)
 ```
 
-##package
+##安裝package
+```{r}
+install.packages(c("dplyr", "lubridate", "googlesheets4"))
+```
+
+##執行package
 ```{r}
 library(googlesheets4)
 library(lubridate)
