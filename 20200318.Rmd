@@ -120,5 +120,24 @@ char2<-'你好'
 Hesaid<-'他說:"今天多了一個確診"'
 ```
 
+```{r}
+char1Vector<-c("你好","How are you?")
+```
 
+```{r}
+library(httr)
+library(dplyr)
+GET("https://api.github.com/repos/lyx231/108-2-56-inclass-practice/commits") %>%
+  content() %>%
+  View()
+```
+
+
+
+```{r}
+library(googlesheets4)
+`出席狀況表單網址` <-"https://docs.google.com/spreadsheets/d/1EAG49qDKPWWi0ebkVr29TLrvVnoBPfkvxYY-J3xLAHY/edit#gid=458686645"  # 缺乏定義值
+ss <- as_sheets_id(`出席狀況表單網址`)
+homework_sheet <- sheets_read(ss,sheet=1)
+```
 
