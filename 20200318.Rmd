@@ -45,6 +45,7 @@ my.108.total_credits <- 15
 `我的108學年總學分數` <- 15 # 特殊名稱處理，`不是名稱的一部份
 `.108.total_credits` <- 15
 ```
+
 ```{r}
 `我的年紀`<-20
 my_age<-`我的年紀`
@@ -125,6 +126,15 @@ char1Vector<-c("你好","How are you?")
 ```
 
 ```{r}
+class(char1Vector)
+```
+```{r}
+dialogue<-c('小明說:"明天不用上課。"','小花說:"真的嗎?"')
+cat(dialogue,sep="\n")
+```
+
+
+```{r}
 library(httr)
 library(dplyr)
 GET("https://api.github.com/repos/lyx231/108-2-56-inclass-practice/commits") %>%
@@ -150,6 +160,28 @@ logi1 <- c(T,TRUE,F,FALSE,FALSE)
 sum(logi1)
 ```
 
+```{r}
+num <- c(1.5, 2, 3)
+int <- c(1L, 3L, -2L)
+char <- c("1.5","2","3")
+logi <- c(T,T,F)
+
+typeof(num)
+typeof(int)
+typeof(char)
+typeof(logi)
+```
+```{r}
+class(num)
+class(int)
+class(char)
+class(logi)
+```
+
+
+
+
+
 ###Extend atomic vectirs
 
 
@@ -172,6 +204,15 @@ majors10_factor <- factor(
 typeof(majors10_factor)
 class(majors10_factor)
 ```
+```{r}
+majors10_char
+```
+```{r}
+majors10_factor
+```
+
+
+
 ```{r}
 levels(majors10_factor)
 ```
