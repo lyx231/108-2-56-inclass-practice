@@ -217,3 +217,55 @@ majors10_factor
 levels(majors10_factor)
 ```
 
+
+
+
+##Data/Time
+
+```{r}
+browseURL("https://docs.google.com/spreadsheets/d/1EAG49qDKPWWi0ebkVr29TLrvVnoBPfkvxYY-J3xLAHY/edit#gid=458686645")
+```
+```{r}
+library(lubridate)
+```
+
+台北 2020-03-18 13:52:40
+```{r}
+tpeDateTime<-ymd_hms("2020-03-18 13:52:40",tz="Asia/Taipei")
+tpeDateTime
+class(tpeDateTime)
+typeof(tpeDateTime)
+```
+
+
+葡萄牙 Mar.18, 2020, 05:52:40
+```{r}
+pgDateTime<-mdy_hms("Mar.18, 2020, 05:52:40",tz="Europe/Lisbon")
+typeof(pgDateTime)
+as.double(tpeDateTime)
+as.double(pgDateTime)
+```
+
+
+###轉成同時區
+```{r}
+with_tz(tpeDateTime, tzone="UTC")
+with_tz(pgDateTime, tzone="UTC")
+```
+```{r}
+ymd_hms("2020-03-04T06:56:29Z")
+#TZ夾數字代表UTC時間,不用指定時區
+with_tz(ymd_hms("2020-03-04T06:56:29Z"),tzone="Asia/Taipei")
+```
+```{r}
+studentTime<-c(ymd_hms("2020-03-04T06:56:29Z"),
+               ymd_hms("2020-03-11 14:16:43",tz="Asia/Taipei"),
+               ymd_hms("2020-03-11 14:34:33",tz="Asia/Taipei")
+               )
+studentTime
+```
+```{r}
+with_tz(studentTime,tzone="Europe/Paris")
+```
+
+
