@@ -217,7 +217,24 @@ majors10_factor
 levels(majors10_factor)
 ```
 
+##cladd/type conversion
+```{r}
+stringInteger <- c("1","2","-11")
+class(stringInteger) # 無法進行數值運算
+stringInteger+2
+```
 
+```{r}
+stringInteger <- c("1","2","-11")
+class(stringInteger) # 無法進行數值運算
+numericInteger<-as.numeric(stringInteger)
+numericInteger+2
+```
+```{r}
+studentId <- c(410773002, 410773015)
+class(studentId)
+studentId<-as.character(studentId) #要改變物件本身，一定要回傳到物件
+```
 
 
 ##Data/Time
