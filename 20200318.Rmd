@@ -623,6 +623,37 @@ listExample[c("學期")] #不建議[]選一個
 listExample[c("student","學期")]
 listExample[c("學期","student")]
 ```
+臺北市夜市資料（來自臺北市食材登錄平台食材來源資訊）：
 
+```{r}
+fromJSON("https://www.dropbox.com/s/qnm9bnz7vccrvcz/taipeiNightMarkets.json?dl=1", simplifyDataFrame = F) -> taipeiNightMarkets
+
+taipeiNightMarkets[c("士林觀光夜市","寧夏觀光夜市")]
+str(taipeiNightMarkets[c("士林觀光夜市","寧夏觀光夜市")], max.level=1)
+str(taipeiNightMarkets[c(2,5,7)], max.level = 1)
+```
+####用"要/不要"邏輯向量選`[c(T,T,F,...)]`
+
+```{r}
+vectorExample
+vectorExample[c(T,T,F)] # 要，要，不要
+```
+```{r}
+str(listExample)
+str(listExample[c(F,T)]) # 不要，要
+str(listExample[c(T,T)]) # 要，要
+```
+用「要/不要」邏輯向量自taipeiNightMarkets選出 寧夏觀光夜市，西昌街觀光夜市，大龍街夜市， 雙城街夜市。
+
+```{r}
+names(taipeiNightMarkets)
+str(taipeiNightMarkets[c(T,F,F,F,T,F,F,F,F,T,F,F,F,T)], max.level = 1)
+```
+```{r}
+selectedMarkets<-rep(F,14) #repeat F by 14times
+print(selectedMarkets)
+selectedMarkets[c(1,5,10,14)]<-TRUE
+print(selectedMarkets)
+```
 
 
