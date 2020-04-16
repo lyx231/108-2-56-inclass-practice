@@ -843,6 +843,34 @@ list1[[2]]["age"] <- list(21)
 # 改變「一個」時，使用[[ ]]比較不會錯。
 str(list1)
 ```
+
+```{r}
+listExample <- 
+  list(
+    student="小明",
+    `學期`=list(
+      `108-1`=list(
+        list(
+          name="個體經濟學",
+          teacher="Alice",
+          grade=85
+        )
+      ),
+      `108-2`=list(
+        list(
+          name="總體經濟學",
+          teacher="Mark",
+          grade=78
+        )
+      )
+    )
+  )
+str(listExample)
+listExample[[2]][[1]][[2]]<-list(name="產業經濟學",teacher="Wen",
+                            grade=88)
+```
+
+
 ```{r}
 list1[[1]][c("bloodType","registered")] <- list("AB",TRUE)
 
@@ -877,7 +905,9 @@ str(list1)
 #刪除Jack的status
 list1[[1]][-c(3)]->list1[[1]] #存回去不能取代整個元素
 #刪除Mary的status, blookType
+list1[[2]][-c(3,5)]->list1[[2]]
 ```
+
 ```{r}
 str(list1)
 list1[[2]][c(1,2)] <- NULL
