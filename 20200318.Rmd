@@ -346,6 +346,7 @@ list(
   c("108學年第2學期","食在拉丁美洲") #向量2
 )
 ```
+
 ```{r}
 # list含兩個vectors
 `小明108學年課表A` <- list(
@@ -354,6 +355,7 @@ list(
 )
 print(`小明108學年課表A`)
 ```
+
 ```{r}
 # list含兩個lists
 `小明108學年課表B` <- list(
@@ -362,6 +364,7 @@ print(`小明108學年課表A`)
 )
 print(`小明108學年課表B`)
 ```
+
 ```{r}
 # list含兩個lists, 子層list又各含兩個vectors
 `小明108學年課表C` <- list(
@@ -376,6 +379,7 @@ print(`小明108學年課表B`)
 )
 print(`小明108學年課表C`)
 ```
+
 物件值可以取名
 ```{r}
 # list含兩個lists, 子層list又各含兩個vectors
@@ -409,6 +413,7 @@ commit<-list(
 )
 print(commit)
 ```
+
 ```{r}
 browseURL("https://api.github.com/repos/tpemartin/108-2-56-inclass-practice/commits") 
 ```
@@ -459,6 +464,7 @@ library(lubridate)
   )
 )
 ```
+
 ```{r}
 `台北市預報元素值` <- 
   list(
@@ -490,19 +496,13 @@ print(`今明天氣`)
 ```
 
 
-
-
-
-
-
-
 ```{r}
 library(jsonlite)
 fromJSON("https://opendata.cwb.gov.tw/fileapi/v1/opendataapi/F-C0032-001?Authorization=rdec-key-123-45678-011121314&format=JSON") ->
   weather_next36hours
 ```
 
-##3.7
+##3.7 物件儲存
 
 ```{r}
 save(commit, file="todat.Rda")
@@ -525,10 +525,12 @@ vectorExample <- c("小明","小英","大雄")
 # 有多少位置可選：
 length(vectorExample)
 ```
+
 ```{r}
 vectorExample[[1]]
 vectorExample[[3]]
 ```
+
 ```{r}
 listExample <- 
   list(
@@ -553,10 +555,12 @@ listExample <-
 # 有多少位置可選：
 length(listExample)
 ```
+
 ```{r}
 listExample[[1]]
 listExample[[2]]
 ```
+
 臺南市運動地圖:
 ```{r}
 library(jsonlite)
@@ -570,15 +574,18 @@ length(tainanSportsMap)
 tainanSportsMap[[1]]
 tainanSportsMap[[1076]]
 ```
+
 ####用名字選`$`
 ```{r}
 # 有多少名字可選：
 names(listExample)
 ```
+
 ```{r}
 listExample$student
 listExample$`學期` # 特殊命名依然要用反頓點呼叫
 ```
+
 其實也可以用[["名字"]]來選，只是名字要以字串「值」的方式來寫，也就是要用引號一對"…", 不用反頓點一對`…`。
 listExample[["student"]]
 listExample$student
@@ -590,6 +597,7 @@ listExample$student
 listExample[["學期"]] # 小心不是反頓點喔。
 listExample$`學期`
 ```
+
 新北市各區衛生所之門診時間及疫苗種類彙整表
 ```{r}
 fromJSON("http://data.ntpc.gov.tw/api/v1/rest/datastore/382000000A-000157-002",
@@ -601,6 +609,7 @@ str(newTaipeiCityVaccine)
 length(newTaipeiCityVaccine)
 names(newTaipeiCityVaccine)
 ```
+
 ```{r}
 str(newTaipeiCityVaccine[[1]])
 str(newTaipeiCityVaccine$success)
@@ -618,6 +627,7 @@ vectorExample
 vectorExample[c(1,3)]
 vectorExample[c(3,2,1)] # 產生重新排列效果
 ```
+
 ```{r}
 # 顯示到第一層
 str(listExample, max.level=1)
@@ -625,11 +635,13 @@ str(listExample, max.level=1)
 str(listExample[c(1,2)], max.level = 1)
 str(listExample[c(2,1)], max.level = 1)
 ```
+
 任選數筆tainanSportsMap的運動地點。
 ```{r}
 str(tainanSportsMap,max.level = 1)
 str(tainanSportsMap[c(1,382,1076)], max.level=1)
 ```
+
 4.1.2.2 用名字選[c("name1","name2",...)]
 ```{r}
 # 顯示到第一層
@@ -639,7 +651,7 @@ listExample[c("學期")] #不建議[]選一個
 listExample[c("student","學期")]
 listExample[c("學期","student")]
 ```
-臺北市夜市資料（來自臺北市食材登錄平台食材來源資訊）：
+
 
 ```{r}
 fromJSON("https://www.dropbox.com/s/qnm9bnz7vccrvcz/taipeiNightMarkets.json?dl=1", simplifyDataFrame = F) -> taipeiNightMarkets
@@ -648,32 +660,38 @@ taipeiNightMarkets[c("士林觀光夜市","寧夏觀光夜市")]
 str(taipeiNightMarkets[c("士林觀光夜市","寧夏觀光夜市")], max.level=1)
 str(taipeiNightMarkets[c(2,5,7)], max.level = 1)
 ```
+
 ####用"要/不要"邏輯向量選`[c(T,T,F,...)]`
 
 ```{r}
 vectorExample
 vectorExample[c(T,T,F)] # 要，要，不要
 ```
+
 ```{r}
 str(listExample)
 str(listExample[c(F,T)]) # 不要，要
 str(listExample[c(T,T)]) # 要，要
 ```
+
 用「要/不要」邏輯向量自taipeiNightMarkets選出 寧夏觀光夜市，西昌街觀光夜市，大龍街夜市， 雙城街夜市。
 
 ```{r}
 names(taipeiNightMarkets)
 str(taipeiNightMarkets[c(T,F,F,F,T,F,F,F,F,T,F,F,F,T)], max.level = 1)
 ```
+
 ```{r}
 selectedMarkets<-rep(F,14) #repeat F by 14times
 print(selectedMarkets)
 selectedMarkets[c(1,5,10,14)]<-TRUE
 print(selectedMarkets)
 ```
+
 ```{r}
 str(taipeiNightMarkets[selectedMarkets], max.level = 1)
 ```
+
 ```{r}
 str(listExample, max.level = 3)
 ```
@@ -699,12 +717,14 @@ get1 <- listExample[["學期"]]
 str(get1, max.level = 1)
 
 ```
+
 ```{r}
 get2 <- listExample["學期"]
 get2 # listExample 只留下 學期元素，是個只有一個元素的list
 str(get2,max.level = 1)
 str(get2,max.level = 2)
 ```
+
 ```{r}
 str(listExample, max.level = 3)
 ```
@@ -718,6 +738,7 @@ str(get1, max.level = 1)  #拿出來
 ```{r}
 str(get2,max.level = 2)  #只留下
 ```
+
 ###連續選取
 
 ```{r}
@@ -736,12 +757,13 @@ select2 <- select1[c(1,4)]; select2
 # 相當於
 numVector[c(T,T,F,T,F,F,T)][c(1,4)]
 ```
+
 ```{r}
 majors <- c("經濟學系","經濟學系","社會學系","社工系","經濟學系")
 names <- c("小英", "小美", "大雄","阿華", "阿尼")
 gender <- c("F","F","M","F","M")
 ```
- 創造出只要“經濟學系”學生的邏輯向量，econOnly。
+創造出只要“經濟學系”學生的邏輯向量，econOnly。
 選出econOnly的names與gender。
 在econOnly的gender下創造出只要“F”的邏輯向量, econFemaleOnly。
 選出names中為“經濟學系”且“F”的姓名。
@@ -752,6 +774,7 @@ econonly_gender<-gender[econonly];econonly_gender
 econFemaleOnly<-c(T,T,F)
 econFemaleOnly_names<-econonly_names[econFemaleOnly]; econFemaleOnly_names
 ```
+
 ```{r}
 source("https://www.dropbox.com/s/cqg0h2i5sfxsh1f/studentEnvironmentReport.R?dl=1",print.eval = T)
 ```
@@ -767,6 +790,7 @@ get1$`108-1`->get1_layer1 ;str(get1_layer1)
 get1_layer1[[1]]->get1_layer2 ;str(get1_layer2)
 get1_layer2$teacher
 ```
+
 ```{r}
 listExample[["學期"]]$`108-1`[[1]]$teacher
 ```
@@ -779,9 +803,11 @@ get2_layer2<-get2_layer1[["108-1"]]
 get2_layer3<-get2_layer2[[1]]
 get2_layer3$teacher
 ```
+
 ```{r}
 listExample["學期"][[1]][["108-1"]][[1]]$teacher
 ```
+
 ##list應用
 ```{r}
 vector1<-c(a=1,b=2,c=3)
@@ -794,6 +820,7 @@ list1[["a"]]
 list1[c("a","c")]
 list1$a
 ```
+
 今明兩日台北市、新北市氣溫：
 ```{r}
 today <- list(
@@ -827,6 +854,7 @@ a[[7]]<-"Johnson"
 a<-c(a,"Mary") #recursive vector concatenate 向量疊代
 a
 ```
+
 ```{r}
 library(lubridate)
 list1 <- 
@@ -840,6 +868,7 @@ list1 <-
 
 str(list1)
 ```
+
 ```{r}
 # 更改日期
 list1[[1]]$birthday <- ymd("1997-03-21")
@@ -852,6 +881,7 @@ list1[[2]] <- list(
 
 str(list1)
 ```
+
 ```{r}
 list1[[1]][["age"]] <- 21
 list1[[2]]["age"] <- list(21)
@@ -892,6 +922,7 @@ list1[[1]][c("bloodType","registered")] <- list("AB",TRUE)
 
 str(list1)
 ```
+
 ```{r}
 print(a)
 a[-c(1,3)]
@@ -900,6 +931,7 @@ a[c(-2)]
 print(a)
 a[-c(1,3)] -> a # 要回存才算真的刪除
 ```
+
 ```{r}
 library(lubridate)
 list1 <- 
