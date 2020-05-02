@@ -232,6 +232,11 @@ numericInteger+2
 ```
 
 ```{r}
+char3<-c("小明","1","3")
+as.integer(char3)
+```
+
+```{r}
 studentId <- c(410773002, 410773015)
 class(studentId)
 studentId<-as.character(studentId) #要改變物件本身，一定要回傳到物件
@@ -969,6 +974,7 @@ fromJSON("https://data.ntpc.gov.tw/od/data/api/54DDDC93-589C-4858-9C95-18B2046CC
 newTaipeiYouBike[[1]]$act<-NULL
 newTaipeiYouBike[[1]]
 ```
+
 
 
 
