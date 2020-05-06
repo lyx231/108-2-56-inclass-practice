@@ -1624,13 +1624,10 @@ print(twDate_reformat)
 dateFinal<-lubridate::ymd(twDate_reformat)
 ```
 
+康熙元年是西元1662年，請將“康熙23年5月6日”轉成date class。（假設月日已是西曆月日）
 ```{r}
-#康熙元年是西元1662年，請將“康熙23年5月6日”轉成date class。（假設月日已是西曆月日）
-
 westernyear<-as.integer(str_extract("康熙23年5月6日","[0-9]+(?=年)"))+1661
 date<-lubridate::ymd(str_replace("康熙23年5月6日","[0-9]+(?=年)",as.character(westernyear)))
-
-
 ```
 
 
