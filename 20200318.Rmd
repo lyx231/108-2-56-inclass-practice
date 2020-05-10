@@ -975,6 +975,7 @@ newTaipeiYouBike[[1]]$act<-NULL
 newTaipeiYouBike[[1]]
 ```
 
+#---------------------
 
 ##4.2 On numeric class
 加、減、乘、除： +, -, *, /
@@ -1080,6 +1081,8 @@ c(175, 166, 170, 160) >= 170
 example$name[pick_above170]
 ```
 
+
+不同屆入學學生在2年級的學業表現
 ```{r}
 source("https://www.dropbox.com/s/qsrw069n94k61lj/transcript100to103_list.R?dl=1")
 ```
@@ -1090,9 +1093,9 @@ str(transcript100to103)
 
 ```{r}
 # 各學屆2年級人數
-table(transcript100to103$學屆)
+table(transcript100to103$`學屆`)
 # 各學屆2年級成績大於85人數
-table(transcript100to103$學屆[pick_above85])
+table(transcript100to103$`學屆`[pick_above85])
 ```
 
 ```{r}
@@ -1121,12 +1124,13 @@ example$name[pick_after98]
 source("https://www.dropbox.com/s/16h6ggua6qtydci/exchangeRate.R?dl=1")
 str(exchangeRate)
 ```
+
 選1998年1月(含)以後的匯率
 ```{r}
 # 只要1998年1月（含）以後的
 library(lubridate)
 pick_after98_01 <-
-  exchangeRate$期間 >= ymd("1998-01-01")
+  exchangeRate$`期間` >= ymd("1998-01-01")
 ```
 
 ```{r}
@@ -1281,6 +1285,7 @@ pick_na <- is.na(example$weight)
 example$name[pick_na]
 ```
 
+
 創立 可選出缺失資料的「要/不要」向量pick_na, 並計算有多少筆缺失。
 ```{r}
 list_victimAges_female$`數目` <- as.integer(list_victimAges_female$`數目`)
@@ -1362,6 +1367,7 @@ CDC_chatbox <- readr::read_csv("http://od.cdc.gov.tw/pr/CDC_chatbox.csv")
 CDC_chatbox$Question[`CDC_chatbox$Question_肺炎`]
 ```
 
+ # 系統設定
 ```{r}
 source('https://www.dropbox.com/s/9y7gwbiqze0c3jy/editRenviron.R?dl=1')
 ```
@@ -1484,6 +1490,7 @@ Ids <- c("A283743192","B829103720","A10920402","C291022384")
 
 str_view_all(Ids, "[AC]")
 str_detect(Ids, "[AC]") # 偵測 出現A、C
+str_detect(Ids, "A|C")
 
 str_extract(Ids,"[A-Z]") # 取出 A-Z的字元
 ```
@@ -1508,7 +1515,7 @@ str_view(
 # 是否有吻合的出象
 str_detect(
   c(claimA,claimB,claimC),
-  pattern=myRegexSlotMachine
+     pattern=myRegexSlotMachine
 )
 ```
 
@@ -1647,3 +1654,4 @@ str_extract_all(
   "[\u4E00-\u9FFF]+")
 ```
 
+###4.6.7 綜合練習
