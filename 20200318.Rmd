@@ -1655,3 +1655,35 @@ str_extract_all(
 ```
 
 ###4.6.7 綜合練習
+學期初在輸入Github inclass-practice-repo網址時，它要長得像
+
+https://github.com/...../108-2-XX-inclass-practice
+
+其中XX只可以是56或78，以下是課程資訊表單學生填答的可能形式，請寫下正確格式的regex，並用str_detect判斷那幾個人沒有正確填寫：
+```{r}
+c(
+  "https://github.com/student1/108-2-78-inclass-practice", 
+  "github.com/student2 / 108-2-56-inclass-practice", 
+  "https://github.com/student3/108-2-56-inclass-practice",
+  "student4 / 108-2-56-inclass-practice",
+  "student5"
+) -> studentGithubURLs
+
+library(stringr)
+
+print(studentGithubURLs)
+
+str_detect(studentGithubURLs,"https://github.com/[:graph:]+ (/108-2-56-inclass-practice|/108-2-78-inclass-practice)")
+
+str_detect(studentGithubURLs,
+"https://github.com/[:graph:]+(/108-2-56-inclass-practice|/108-2-78-inclass-practice)")
+
+
+target_regex <- 
+  "https://github.com/[:graph:]+/108-2-(56|78)-inclass-practice"
+str_detect(
+  studentGithubURLs, target_regex
+)
+
+```
+
