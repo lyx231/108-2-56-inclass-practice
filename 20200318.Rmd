@@ -1723,4 +1723,158 @@ str_extract(midtermFilename,
 
 
 ```
+##4.7 On factor class
+
+```{r}
+char1 <- c("Wild","Apple","Donald","May","Avocada") 
+factor1 <- factor(char1)
+levels(factor1)
+```
+
+```{r}
+library(stringr)
+char2 <- c("蔡英文","習近平","Donald Trump","蔡頭") 
+factor2 <- factor(char2)
+levels(factor2)
+
+sort(
+  str_sub(char2,1,1)
+)
+sort(
+  str_sub(char2,2,2)
+)
+```
+
+```{r}
+Sys.getlocale("LC_COLLATE")
+```
+
+```{r}
+jsonlite::fromJSON("https://od.cdc.gov.tw/eic/Day_Confirmation_Age_County_Gender_19CoV.json") -> covid19
+```
+
+```{r}
+# 不可排序類別：性別、縣市、是否境外移入
+covid19$`縣市` <- 
+  factor(covid19$`縣市`)
+covid19$`性別` <-
+  factor(covid19$`性別`)
+covid19$`是否為境外移入` <-
+  factor(
+    covid19$`是否為境外移入`
+  )
+
+# 可排序類別資料：年齡層
+covid19$`年齡層` <-
+  factor(
+    covid19$`年齡層`,
+    ordered=TRUE
+  )
+```
+
+```{r}
+levels(covid19$`縣市`)
+levels(covid19$`性別`)
+levels(covid19$`是否為境外移入`)
+
+covid19$`年齡層`
+levels(covid19$`年齡層`)
+```
+
+```{r}
+levels(covid19$`性別`)
+covid19$`性別` <- factor(covid19$`性別`, c("男","女"))
+```
+
+```{r}
+jsonlite::fromJSON(
+  "https://www.dropbox.com/s/jckqryeh5zeat5w/regionPopulation.json?dl=1"
+) -> population
+unlist(population) -> population
+```
+
+covid19$縣市的levels依其人口由大排到小。如“新北市”人口最多，它就要排levels的第一個，依此類推。
+```{r}
+print(population)
+class(population) # 判斷出是named integer vector
+names(population) # 元素名稱是台灣各縣市
+population[["新北市"]]
+```
+
+```{r}
+levels(covid19$`縣市`) # 是名稱字串向量
+
+# 由於population元素值有names，可以用`[名稱字串向量]`取出所要的
+levels(covid19$`縣市`) -> levelsInData
+population[levelsInData] -> population
+population
+```
+
+```{r}
+population <- sort(population, decreasing=T)
+population
+```
+
+```{r}
+newLevels <- names(population)
+newLevels
+```
+
+```{r}
+covid19$`縣市` <-
+  factor(
+    covid19$`縣市`, levels=newLevels
+  )
+
+levels(covid19$`縣市`)
+```
+
+年齡應該用年齡區間起始數字排序
+```{r}
+levels(covid19$`年齡層`)
+```
+
+```{r}
+level_names <- levels(covid19$`年齡層`)
+startingAges <- stringr::str_extract(
+  level_names,
+  "^[0-9]+" # regex：開頭的一串數字
+)
+```
+
+```{r}
+# 要numerical class排的才一定對
+startingAges <- as.integer(startingAges)
+names(startingAges) <- level_names
+startingAges
+```
+
+```{r}
+sort(startingAges) -> startingAges
+startingAges
+```
+
+```{r}
+covid19$`年齡層` <- 
+  factor(
+    covid19$`年齡層`, names(startingAges)
+  )
+levels(covid19$`年齡層`)
+```
+
+###4.7.2 levels改名
+```{r}
+levels(x) <- 
+```
+
+```{r}
+factor1 <- factor(
+  c("A","A","C","A","D","F","D","D")
+)
+factor1
+
+levels(factor1) <- c("優","佳","尚可","普") #factor1內元素值也會被更改
+
+factor1 
+```
 
