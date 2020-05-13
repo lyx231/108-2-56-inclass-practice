@@ -1987,5 +1987,13 @@ c(char1, char2)
 factor1 <- factor(c("好", "壞", "壞"))
 factor2 <- factor(c("壞", "好", "好"))
 c(factor1, factor2)
+
+
+factor1[4:6] <- factor2
+factor1
+```
+
+```{r}
+forcats::fct_c(factor1, factor2)
 ```
 
