@@ -1932,6 +1932,18 @@ levels(covid19$`地區`) <- newLevels
 covid19$`地區`
 ```
 
+將covid19$縣市 依縣市目前個案數目由大排到小。（hint: 可使用table()來得到個案數統計, 它會自然產生named integer vector）
+```{r}
+levels(covid19$`縣市`)
+table(covid19$`縣市`)
+new<-table(covid19$`縣市`)
+new_levels<-sort(new,decreasing = T)
+names(new_levels)
+levels(covid19$`縣市`)<-names(new_levels)
+levels(covid19$`縣市`)
+```
+
+
 ```{r}
 levels(covid19$`年齡層`)
 
@@ -1995,5 +2007,143 @@ factor1
 
 ```{r}
 forcats::fct_c(factor1, factor2)
+```
+
+###4.7.5 綜合練習
+
+將covid19$性別的levels名稱男、女改Male、Female。
+```{r}
+levels(covid19$`性別`)<-c("Female","Male")
+```
+
+1.在garbageRoutes新增route元素，其元素值為對應garbageRoutes$linename裡粹取出的“XXX路線”字眼，如原本“A11路線(一、四)下午”的linename, 它的route值為“A11路線” 。（garbageRoutes$route為factor class)
+
+2.請設定garbageRoutes$route的levels依其路線停靠總站數由小排到大陳列。
+
+3.linename的“路線”字眼後面接的是營運時間，如“A11路線(一、四)下午”的linename, 它的營運時間為“(一、四)下午”。若沒寫時間的路線，它的營運時間為“全天”。請在garbageRoutes新增time元素，其元素值為對應linename所隱含的營運時間。（garbageRoutes$time為factor class, levels會有“(一、四)下午”, “下午”, “下午(1.4版)”, “晚上”, 及“全天”）
+
+4.將garbageRoutes$time的levels中的“下午(1.4版)”改成“下午”。
+```{r}
+jsonlite::fromJSON("https://data.ntpc.gov.tw/od/data/api/EDC3AD26-8AE7-4916-A00B-BC6048D19BF8?$format=json") ->
+  garbageRoutes
+
+garbageRoutes$route<-factor(
+str_extract(garbageRoutes$linename,"[:alnum:]+路線"))
+
+newlevels<-names(sort(table(garbageRoutes$route)))
+levels(garbageRoutes$route)<-newlevels
+
+garbageRoutes$time<-
+  str_extract(garbageRoutes$linename,"(?<=線)[:graph:]+")
+garbageRoutes$time[is.na(garbageRoutes$time)]<-"全天"
+garbageRoutes$time<-factor(garbageRoutes$time)                  
+levels(garbageRoutes$time)[[3]]<-"下午"
+```
+
+```{r}
+garbageRoutes$route<-factor(
+str_extract(garbageRoutes$linename,"[:alnum:]+路線"))
+
+newlevels<-names(sort(table(garbageRoutes$route)))
+levels(garbageRoutes$route)<-newlevels
+
+garbageRoutes$time<-
+  str_extract(garbageRoutes$linename,"(?<=線)[:graph:]+")
+garbageRoutes$time<-factor(garbageRoutes$time,exclude = F)
+levels(garbageRoutes$time)[is.na(levels(garbageRoutes$time))]<-"全天"
+levels(garbageRoutes$time)
+
+levels(garbageRoutes$time)[[3]]<-"下午"
+```
+
+##4.8 On list
+
+```{r}
+library(purrr)
+```
+
+###4.8.1 每個元素相同運算
+```{r}
+example <- list(
+  name=c("小明","小花","小新","美美"),
+  height=c(175,166,170,160),
+  weight=c(77,NA,60,43),
+  birthday=lubridate::ymd(c("1998-03-11","1999-12-22","1995-08-22","2001-10-10")),
+  hobby=c("美食 旅遊","旅遊 時尚","3C 美食","音樂 旅遊"),
+  residence=c("Taipei","New Taipei","Taichung","Kaohsiung"),
+  allowance=factor(c("0-1000","1001-2000","2000+","1001-2000")),
+  bloodType=c("A","B","B","O")
+)
+```
+
+```{r}
+`pick_小新` <- example$name == "小新"
+data_selected <- 
+  list(
+    name=example$name[`pick_小新`],
+    weight=example$weight[`pick_小新`],
+    height=example$height[`pick_小新`],
+    hobby=example$hobby[`pick_小新`],
+    residence=example$residence[`pick_小新`],
+    allowance=example$allowance[`pick_小新`],
+    bloodType=example$bloodType[`pick_小新`]
+  )
+```
+
+```{r}
+map(example, ~.x[pick_小新]) -> 
+  data_selected 
+  
+data_selected
+```
+
+```{r}
+jsonlite::fromJSON("https://www.dropbox.com/s/6252gbdnv9owljm/dance.json?dl=1", simplifyDataFrame = F) -> dance
+```
+
+```{r}
+# 第一個dance表演名稱
+dance[[1]]$title
+# 第二個dance表演名稱
+dance[[2]]$title
+```
+
+```{r}
+map(dance, ~.x$title) ->
+  list_titles
+
+View(list_titles)
+```
+
+```{r}
+# 記載第一個表演的所有場次訊息
+dance[[1]]$showInfo
+str(dance[[1]]$showInfo)
+# 計算第一個表演有幾個場次
+length(dance[[1]]$showInfo)
+# 計算第二個表演有幾個場次
+length(dance[[2]]$showInfo)
+```
+
+```{r}
+map(dance,~length(.x$showInfo)) ->
+  list_numberOfShows 
+  
+View(list_numberOfShows)
+```
+
+```{r}
+str(dance[[4]]$showInfo)
+
+# 這個表演第1個場次的訊息
+dance[[4]]$showInfo[[1]]$time
+# 這個表演第2個場次的訊息
+dance[[4]]$showInfo[[2]]$time
+```
+
+```{r}
+map(dance[[4]]$showInfo, ~.x$time) ->
+  
+list_showTimes_dance4
 ```
 
