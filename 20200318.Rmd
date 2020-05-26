@@ -977,7 +977,7 @@ newTaipeiYouBike[[1]]
 
 #---------------------
 
-##4.2 On numeric class
+##4.3 On numeric class
 加、減、乘、除： +, -, *, /
 ```{r}
 a <- c(2, 3, 5)
@@ -1049,7 +1049,7 @@ paste0(
 )
 ```
 
-## Relational Operators
+## 4.4 Relational Operators
 ```{r}
 example <- list(
   name=c("小明","小花","小新","美美"),
@@ -1310,7 +1310,7 @@ example$name[pick_loveFood]
 
 以下資料為新北市垃圾車路線
 ```{r}
-jsonlite::fromJSON("https://data.ntpc.gov.tw/od/data/api/EDC3AD26-8AE7-4916-A00B-BC6048D19BF8?$format=json") ->
+jsonlite::fromJSON("https://data.ntpc.gov.tw/api/datasets/EDC3AD26-8AE7-4916-A00B-BC6048D19BF8/json") ->
   garbageRoutes
 ```
 
@@ -1408,6 +1408,9 @@ str(example[c("name","hobby","bloodType")])
 example$name[
     pick_loveFood & pick_bloodB
   ]
+
+  example$name[str_detect(example$hobby,"美食")&
+               example$bloodType=="B"]
 ```
 
 ####誰1998以後（含）出生或不住大台北
@@ -1544,6 +1547,8 @@ addresses <- c(
   '新竹市東區科學園路125號1樓'
   )
 
+str_extract(addresses,"[0-9]+號")
+
 strip1 <- strip2 <- strip3 <- "[0-9]"
 strip4 <- "號"
 myRegexSlotMachine <- paste0(strip1,strip2,strip3,strip4)
@@ -1579,6 +1584,7 @@ target_regex <- "唧唧"
 pattern <- glue::glue("^{target_regex}")
 print(pattern)
 str_view(phrase, pattern) 
+str_view(phrase,"^唧唧")
 ```
 
 ```{r}
@@ -1673,8 +1679,6 @@ library(stringr)
 
 print(studentGithubURLs)
 
-str_detect(studentGithubURLs,"https://github.com/[:graph:]+ (/108-2-56-inclass-practice|/108-2-78-inclass-practice)")
-
 str_detect(studentGithubURLs,
 "https://github.com/[:graph:]+(/108-2-56-inclass-practice|/108-2-78-inclass-practice)")
 
@@ -1695,9 +1699,6 @@ midtermFilename <-
     "exam1410882888.Rmd",
     "410682999第一次期中考.Rmd",
     "期中考310573888.R")
-
-str_extract(midtermFilename,
-"(?<=exam1-)4[0-9]{8}|(?<=exam1)4[0-9]{8}|4[0-9]{8}|3[0-9]{8}")
 
 #1_ANS
 pattern <- "[43][0-9]{8}"
@@ -1721,8 +1722,8 @@ str_extract(midtermFilename,
 str_extract(midtermFilename,
             "(?<=[43](99|107|108|106|105))[0-9]{2}")  
 
-
 ```
+
 ##4.7 On factor class
 
 ```{r}
@@ -2016,6 +2017,7 @@ forcats::fct_c(factor1, factor2)
 levels(covid19$`性別`)<-c("Female","Male")
 ```
 
+
 1.在garbageRoutes新增route元素，其元素值為對應garbageRoutes$linename裡粹取出的“XXX路線”字眼，如原本“A11路線(一、四)下午”的linename, 它的route值為“A11路線” 。（garbageRoutes$route為factor class)
 
 2.請設定garbageRoutes$route的levels依其路線停靠總站數由小排到大陳列。
@@ -2024,7 +2026,7 @@ levels(covid19$`性別`)<-c("Female","Male")
 
 4.將garbageRoutes$time的levels中的“下午(1.4版)”改成“下午”。
 ```{r}
-jsonlite::fromJSON("https://data.ntpc.gov.tw/od/data/api/EDC3AD26-8AE7-4916-A00B-BC6048D19BF8?$format=json") ->
+jsonlite::fromJSON("https://data.ntpc.gov.tw/api/datasets/EDC3AD26-8AE7-4916-A00B-BC6048D19BF8/json") ->
   garbageRoutes
 
 garbageRoutes$route<-factor(
@@ -2178,6 +2180,7 @@ weather_next36hours_endTime<-map(weather_next36hours$cwbopendata$dataset$locatio
 
 weather_next36hours_high<-map(weather_next36hours$cwbopendata$dataset$location$weatherElement,~max(.x$time[[1]]$parameter$parameterValue))
 ```
+
 
 ##5.1 Pipe
 
