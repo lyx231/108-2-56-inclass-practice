@@ -1140,6 +1140,8 @@ exchangeRate_after98 <-
     `幣別`=exchangeRate$`幣別`[pick_after98_01],
     `匯率`=exchangeRate$`匯率`[pick_after98_01]
   )
+
+exchangeRate_after98<-map(exchangeRate,~.x[pick_after98_01])
 ```
 
 ####可排序類別資料比較
@@ -1201,7 +1203,7 @@ pick_above30<-list_victimAges_female$`年齡層`>="30_39歲"
 ```
 
 ```{r}
-sum(list_victimAges_female$`數目`, na.rm=T)
+sum(list_victimAges_female$`數目`, na.rm=T)  #remove NA
 sum(list_victimAges_female$`數目`[pick_above30], na.rm = T)
 ```
 
@@ -1680,7 +1682,7 @@ library(stringr)
 print(studentGithubURLs)
 
 str_detect(studentGithubURLs,
-"https://github.com/[:graph:]+(/108-2-56-inclass-practice|/108-2-78-inclass-practice)")
+"(https://github.com/[:graph:]+(/108-2-56-inclass-practice|/108-2-78-inclass-practice))")
 
 
 target_regex <- 
@@ -2321,7 +2323,7 @@ map(dataList, is.numeric) %>%
 unlist(.) %>%
 
 dataList[.] %>%
-{(.[[1]] > 50)} %>%   #元素粹取+比大小 兩個函數
+{(.[[1]] > 50)} %>%    #元素粹取+比大小 兩個函數
 num_element[[1]][.] -> bigNumber
 ```
 
