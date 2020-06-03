@@ -2481,3 +2481,77 @@ learning_topics <-
 learning_topics$functionsCreated$demand(1.2)
 ```
 
+###5.2.4 Environment
+```{r}
+typeof(demand_return)
+```
+
+```{r}
+# 查詢函數執行所要求環境
+environment(demand_return)
+```
+
+```{r}
+# 若函數執行需要Global environment已存在某些物件，查詢需要哪些物件
+codetools::findGlobals(demand_return)
+```
+
+```{r}
+intercept <- 10
+slope <- -5
+myDemand <- function(p){
+  q_d <- intercept + slope*p
+  return(q_d)
+}
+```
+
+```{r}
+environment(demand_return)
+environment(myDemand)
+
+codetools::findGlobals(demand)
+codetools::findGlobals(myDemand) 
+
+# myDemand對Global environment的要求多了intercept及slope
+```
+
+```{r}
+# 移除global environment裡的intercept及slope
+rm(intercept, slope)
+
+demand_return(1.2) # 維持正常運作
+myDemand(1.2) # 無法運作
+```
+
+```{r}
+intercept <- 10
+slope <- -5
+myDemand(1.2)
+
+slope <- -1
+myDemand(1.2)  #10-1*p
+
+intercept <- 5
+slope <- -1.2
+myDemand(1.2)  #5-1.2*p
+```
+
+###5.2.5 預設值
+```{r}
+myDemand2 <- function(p, intercept=10, slope=-5){
+  q_d <- intercept + slope*p
+  return(q_d)
+}
+```
+
+```{r}
+environment(myDemand2)
+findGlobals(myDemand2) # 不依靠global env裡的intercept/slope
+```
+
+```{r}
+myDemand2(1.2)
+myDemand2(1.2, slope=-1)
+myDemand2(1.2, intercept=5, slope=-1.2)
+```
+
