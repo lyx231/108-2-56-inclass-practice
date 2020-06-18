@@ -2578,25 +2578,38 @@ when_busArrives<-function(route,stop){
 library(httr)
 library(magrittr)
 library(purrr)
+library(stringr)
 GET("https://ptx.transportdata.tw/MOTC/v2/Bus/EstimatedTimeOfArrival/City/NewTaipei/916?$top=30&$format=JSON") %>%
   content -> estimatedArrivalTime_916
 
 GET("https://ptx.transportdata.tw/MOTC/v2/Bus/Route/City/NewTaipei/939?$top=30&$format=JSON") %>%
   content -> route_916
+
 as.integer(map(estimatedArrivalTime_916,~.x$StopName$Zh_tw==stop))+
 as.integer(map(estimatedArrivalTime_916,~.x$RouteName$Zh_tw==route))->first
-estimatedArrivalTime_916[first==2]->second
+
+estimatedArrivalTime_916[first==2] ->second
 
 unlist(map(second,~.x$Direction))->three
 
 estimatedArrivalTime<-list(
-  `去程`=list(time=second[three==1][[1]]$EstimateTime),
-  `返程`=list(time=second[three==0][[1]]$EstimateTime)
+  `去程`=list(time=second[three==0][[1]]$EstimateTime),
+  `返程`=list(time=second[three==1][[1]]$EstimateTime)
 )
+paste0(estimatedArrivalTime$`去程`$time,"秒")->estimatedArrivalTime$`去程`$time
+paste0(estimatedArrivalTime$`返程`$time,"秒")->estimatedArrivalTime$`返程`$time
+
+if(estimatedArrivalTime$`去程`$time=="秒"){
+    estimatedArrivalTime$`去程`$time<-"未發車"
+}
+if(estimatedArrivalTime$`返程`$time=="秒"){
+      estimatedArrivalTime$`返程`$time<-"未發車"
+}
+
 return(estimatedArrivalTime)
 }
+
 when_busArrives("916","臺北大學正門")
-when_busArrives("916","學勤路")
 ```
 
 ```{r}
@@ -2604,7 +2617,7 @@ estimatedArrivalTime_916[[1]]$StopName$Zh_tw
 library(purrr)
 
 as.integer(map(estimatedArrivalTime_916,~.x$StopName$Zh_tw=="學勤路"))+
-as.integer(map(estimatedArrivalTime_916,~.x$RouteName$Zh_tw=="939"))->first
+as.integer(map(estimatedArrivalTime_916,~.x$RouteName$Zh_tw=="916"))->first
 estimatedArrivalTime_916[first==2]->second
 
 unlist(map(second,~.x$Direction))->three
