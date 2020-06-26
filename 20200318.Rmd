@@ -3665,3 +3665,76 @@ for(.x in 1:10){
 }
 ```
 
+####累計型output
+```{r}
+a <- sample(1:100, 10, replace=T)
+print(a)
+```
+
+```{r}
+sum<-0
+sum<-sum+a[[1]]
+sum<-sum+a[[2]]
+
+sum<-sum+a[[10]]
+
+10 %>% {sum <- sum+a[[.]]}
+```
+
+```{r}
+sum <- 0
+for(.x in 1:10){
+  sum <- sum+a[[.x]]
+}
+
+print(sum)
+```
+
+####長度不定型output
+```{r}
+output <- c()
+for(.x in 1:10){              #每次執行動作一樣
+  new <- sample(0:100,1)
+  if(new %% 3==0){
+    output <- c(output, new)  #是3的倍數執行 向量堆疊
+  }
+}
+
+print(output)
+```
+
+####next
+```{r}
+list(
+  list("student A", c(2,3,4,5)),
+  list("student B", NA), # 沒交作業
+  list("student C", factor(c(2,3,4,5))),
+  list("student D", factor(c(2,3,5)))
+) -> collectionHWs
+
+correctAns <- factor(c(2,3,4,5))
+
+output <- vector("integer",length(collectionHWs))
+nameVector <- vector("character", length(collectionHWs))
+for(.x in seq_along(collectionHWs)){
+  nameVector[[.x]] <- collectionHWs[[.x]][[1]]
+  studentAns <- collectionHWs[[.x]][[2]] 
+  if(is.na(studentAns)){
+    output[[.x]] <- 0
+    next
+  } 
+  
+  # 改題部份
+  if(identical(studentAns, correctAns)){  #字串內容&class相同
+    output[[.x]] <- 10
+  } else if (class(studentAns)!=class(correctAns) && identical(as.character(studentAns),as.character(correctAns))) {
+    output[[.x]] <- 5
+  } else {
+    output[[.x]] <- 0
+  }
+}
+names(output) <- nameVector
+
+print(output)
+```
+
